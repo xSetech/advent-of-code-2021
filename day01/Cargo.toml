@@ -1,0 +1,12 @@
+[package]
+description = "Advent of Code - Day 1 Soln"
+authors = ["Seth Junot <xsetech@gmail.com>"]
+name = "day01"
+version = "0.1.0"
+edition = "2021"
+
+[profile.release]
+debug = true
+lto = true
+panic = "abort"
+opt-level = "s"
