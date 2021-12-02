@@ -21,17 +21,34 @@ struct Command {
 struct Position {
     horizontal: i32,
     depth: i32,
+    aim: i32,
 }
 
 
 impl Position {
 
-    fn go(&mut self, direction: &Direction, amount: i32) {
+    fn go_part1(&mut self, direction: &Direction, amount: i32) {
 
         match direction {
             Direction::Forward => self.horizontal += amount,
             Direction::Down => self.depth += amount,
             Direction::Up => self.depth -= amount,
+        }
+
+    }
+
+    fn go_part2(&mut self, direction: &Direction, amount: i32) {
+
+        if matches!(direction, Direction::Forward) {
+            self.horizontal += amount;
+            self.depth += self.aim * amount;
+            return;
+        }
+
+        match direction {
+            Direction::Down => self.aim += amount,
+            Direction::Up => self.aim -= amount,
+            _ => (),
         }
 
     }
@@ -56,10 +73,28 @@ fn part1(input: &Vec<Command>) -> i32 {
     let mut position = Position {
         horizontal: 0,
         depth: 0,
+        aim: 0,
     };
 
     for command in input.iter() {
-        position.go(&command.direction, command.amount);
+        position.go_part1(&command.direction, command.amount);
+    }
+
+    return position.horizontal * position.depth;
+
+}
+
+
+fn part2(input: &Vec<Command>) -> i32 {
+
+    let mut position = Position {
+        horizontal: 0,
+        depth: 0,
+        aim: 0,
+    };
+
+    for command in input.iter() {
+        position.go_part2(&command.direction, command.amount);
     }
 
     return position.horizontal * position.depth;
@@ -94,6 +129,8 @@ fn main() {
     if part1_input.len() > 0 {  // let empty file mean "skip"
         let part1_answer = part1(&part1_input);
         println!("Part 1 answer: {}", part1_answer);
+        let part2_answer = part2(&part1_input);
+        println!("Part 2 answer: {}", part2_answer);
     }
 
 }
@@ -118,9 +155,10 @@ mod tests {
         let mut position = Position {
             horizontal: 0,
             depth: 0,
+            aim: 0,
         };
         for command in example_inputs.iter() {
-            position.go(&command.direction, command.amount);
+            position.go_part1(&command.direction, command.amount);
         }
         assert_eq!(15, position.horizontal);
         assert_eq!(10, position.depth);
@@ -128,5 +166,33 @@ mod tests {
         let output = part1(&example_inputs);
         assert_eq!(150, output);
     }
+
+    /// The example inputs and outputs given by AOC
+    #[test]
+    fn test_part2_example() {
+        let example_inputs = vec![
+            Command { direction: Direction::Forward, amount: 5 },
+            Command { direction: Direction::Down, amount: 5 },
+            Command { direction: Direction::Forward, amount: 8 },
+            Command { direction: Direction::Up, amount: 3 },
+            Command { direction: Direction::Down, amount: 8 },
+            Command { direction: Direction::Forward, amount: 2 },
+        ];
+
+        let mut position = Position {
+            horizontal: 0,
+            depth: 0,
+            aim: 0,
+        };
+        for command in example_inputs.iter() {
+            position.go_part2(&command.direction, command.amount);
+        }
+        assert_eq!(15, position.horizontal);
+        assert_eq!(60, position.depth);
+
+        let output = part2(&example_inputs);
+        assert_eq!(900, output);
+    }
+
 
 }
