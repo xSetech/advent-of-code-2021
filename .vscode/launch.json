@@ -1,0 +1,13 @@
+{
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "name": "Debug day 2",
+            "type": "lldb",
+            "request": "launch",
+            "program": "${workspaceFolder}/day02/target/debug/day02",
+            "args": ["${workspaceFolder}/inputs/day02/part1"],
+            "cwd": "${workspaceFolder}"
+        }
+    ]
+}
