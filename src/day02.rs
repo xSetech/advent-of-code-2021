@@ -1,8 +1,7 @@
 // AoC 2021 - Day 2
 
-use std::env;
 use std::fs;
-use std::process;
+use std::path::Path;
 
 
 enum Direction {
@@ -102,15 +101,9 @@ fn part2(input: &Vec<Command>) -> i32 {
 }
 
 
-fn main() {
+pub fn main(input_path: &Path) {
 
-    let args: Vec<String> = env::args().collect();
-    if args.len() == 1 {
-        eprintln!("Expected filenames to be provided as arguments for each problem part input...");
-        process::exit(1);
-    }
-
-    let part1_input_filename: &String = &args[1];
+    let part1_input_filename: &String = &input_path.display().to_string();
     println!("Will read inputs from this file for part 1:  {}", part1_input_filename);
     let part1_input_string: String = fs::read_to_string(part1_input_filename).expect("Failed to read file contents for part 1 as a string");
     let part1_input_lines: Vec<&str> = part1_input_string.lines().collect();

@@ -1,8 +1,8 @@
 [package]
-description = "Advent of Code - Day 2 Soln"
+description = "Advent of Code 2021"
 authors = ["Seth Junot <xsetech@gmail.com>"]
-name = "day02"
-version = "0.1.0"
+name = "aoc-2021-sjunot"
+version = "0.2.0"
 edition = "2021"
 
 [profile.release]
