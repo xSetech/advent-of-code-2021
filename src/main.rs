@@ -16,7 +16,7 @@ fn main() {
     //  * input (path, str), e.g. "./inputs/day01/part1"
     let args: Vec<String> = env::args().collect();
     if args.len() != 3 {
-        eprint!("Invalid number of arguments; please provide the day and path to file containing inputs.");
+        eprintln!("Invalid number of arguments; please provide the day and path to file containing inputs.");
         process::exit(1);
     }
     let args_day = &args[1];
