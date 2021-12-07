@@ -5,6 +5,8 @@ use std::env;
 use std::path::Path;
 use std::process;
 
+mod utils;
+
 mod day01;
 mod day02;
 
