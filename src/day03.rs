@@ -94,12 +94,54 @@ mod part1 {
 }
 
 
+mod part2 {
+
+    use super::*;
+
+    fn reduce(input: &Input, pos: u32, lcb: bool) -> u32 {
+
+        let mask: u32 = (1 << input.width - 1) >> pos;
+        let mut mcb: u32 = most_common_bit(input, Some(1));
+
+        if lcb {  // filter by least-common bit instead of mcb
+            mcb = !mcb & mask
+        }
+
+        let filtered: Vec<u32> = input.data.iter().filter(
+            |int| {
+                mask & *int == mask & mcb
+            }
+        ).map(|x| *x).collect();
+
+        if filtered.len() > 1 {
+            let new_input = Input { width: input.width, data: filtered };
+            return reduce(&new_input, pos + 1, lcb);
+        }
+
+        return filtered[0];
+
+    }
+
+    pub fn solution(input: &Input) -> u32 {
+
+        let oxygen_generator_rating = reduce(input, 0, false);
+        let co2_scrubber_rating = reduce(input, 0, true);
+
+        return oxygen_generator_rating * co2_scrubber_rating;
+
+    }
+
+}
+
+
 pub fn main(input_path: &Path) {
 
     let part1_input_source: String = fs::read_to_string(input_path).expect("failed to read part 1 input");
     let part1_input = part1::input(&part1_input_source);
     let part1_output = part1::solution(&part1_input);
     println!("Part 1 answer: {}", part1_output);
+    let part2_output = part2::solution(&part1_input);
+    println!("Part 2 answer: {}", part2_output);
 
 }
 
@@ -131,7 +173,8 @@ mod tests {
         let part1_input = part1::input(&example_input_cleaned);
         let part1_output = part1::solution(&part1_input);
         assert_eq!(part1_output, 198);
-
+        let part2_output = part2::solution(&part1_input);
+        assert_eq!(part2_output, 230);
     }
 
 }
