@@ -9,6 +9,7 @@ mod utils;
 
 mod day01;
 mod day02;
+mod day03;
 
 
 fn main() {
@@ -35,7 +36,7 @@ fn main() {
 
     // Validate argument:  day
     match day.as_str() {
-        "01" | "02" => (),
+        "01" | "02" | "03" => (),
         _ => { eprintln!("Invalid day given!"); process::exit(1) }
     };
 
@@ -50,6 +51,7 @@ fn main() {
     match day.as_str() {
         "01" => day01::main(input_path),
         "02" => day02::main(input_path),
+        "03" => day03::main(input_path),
         _ => panic!("BUG: missing day (TODO: create a table of completed days)"),
     }
 
