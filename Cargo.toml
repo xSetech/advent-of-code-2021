@@ -2,11 +2,17 @@
 description = "Advent of Code 2021"
 authors = ["Seth Junot <xsetech@gmail.com>"]
 name = "aoc-2021-sjunot"
-version = "0.2.0"
+version = "0.3.0"
 edition = "2021"
 
 [profile.release]
 debug = true
 lto = true
-panic = "abort"
-opt-level = "s"
+panic = "unwind"
+opt-level = "z"
+
+[profile.dev]
+debug = true
+lto = false
+panic = "unwind"
+opt-level = "z"
