@@ -15,4 +15,4 @@ opt-level = "z"
 debug = true
 lto = false
 panic = "unwind"
-opt-level = "z"
+opt-level = 0
