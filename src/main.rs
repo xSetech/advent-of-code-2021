@@ -10,6 +10,7 @@ mod utils;
 mod day01;
 mod day02;
 mod day03;
+mod day04;
 
 
 fn main() {
@@ -42,6 +43,7 @@ fn main() {
         1 => day01::main(input_path),
         2 => day02::main(input_path),
         3 => day03::main(input_path),
+        4 => day04::main(input_path),
         _ => panic!("BUG: missing day (TODO: create a table of completed days)"),
     };
 
