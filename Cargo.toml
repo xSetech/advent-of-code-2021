@@ -2,7 +2,7 @@
 description = "Advent of Code 2021"
 authors = ["Seth Junot <xsetech@gmail.com>"]
 name = "aoc-2021-sjunot"
-version = "0.3.0"
+version = "0.4.0"
 edition = "2021"
 
 [profile.release]

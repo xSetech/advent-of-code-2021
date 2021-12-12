@@ -30,9 +30,10 @@ mod bingo {
     /// game of Bingo. Predictions for Boards can be compared against one
     /// another to determine which would win a given game, at what time, and
     /// with what score.
-    pub struct Prediction {
+    pub struct Prediction<'board> {
         pub when: usize,
         pub score: u32,
+        pub board: &'board Board,
     }
 
     impl Board {
@@ -114,6 +115,7 @@ mod bingo {
                         return Some(Prediction {
                             when: number_idx,
                             score: self.score(&cells, number),
+                            board: self,
                         })
                     }
                 }
@@ -209,7 +211,7 @@ mod part1 {
             .collect::<Vec<bingo::Prediction>>();
 
         // Sort the results in ascending order of when they'll win the game.
-        predictions.sort_by(|a, b| b.score.cmp(&a.score) );
+        predictions.sort_by(|a, b| a.when.cmp(&b.when) );
 
         // Return the score of the board that will win the soonest.
         return predictions[0].score;
@@ -233,6 +235,7 @@ pub fn main(input_path: &Path) {
 mod tests {
     use super::*;
     use super::super::utils;
+    use super::bingo::Board;
 
     /// The example inputs and outputs given by AOC
     #[test]
@@ -263,6 +266,42 @@ mod tests {
         let part1_input = part1::input(&example_input_cleaned);
         let part1_output = part1::solution(&part1_input);
         assert_eq!(part1_output, 4512);
+
+    }
+
+    #[test]
+    fn test_part1_row_or_col_win() {
+
+        let mut input = bingo::Input {
+            numbers: vec![],
+            boards: vec![
+                Board {
+                    grid: [
+                        [0,  0,  0,  1, 11],  // wins by column, score = 11
+                        [0,  0,  0,  1,  0],
+                        [0,  0,  0,  1,  0],
+                        [0,  0,  0,  1,  0],
+                        [0,  0,  0,  1,  0],
+                    ]
+                },
+                Board{
+                    grid: [
+                        [0,  0,  0,  0, 11],  // wins by row, score = 22
+                        [0,  0,  0,  0,  0],
+                        [0,  0,  0,  0,  0],
+                        [2,  2,  2,  2,  2],
+                        [0,  0,  0,  0,  0],
+                    ]
+                }
+            ],
+        };
+
+        input.numbers.push(1);
+        assert_eq!(part1::solution(&input), 11);
+
+        input.numbers.clear();
+        input.numbers.push(2);
+        assert_eq!(part1::solution(&input), 22);
 
     }
 

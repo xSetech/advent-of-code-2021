@@ -2,11 +2,11 @@
     "version": "0.2.0",
     "configurations": [
         {
-            "name": "Debug day 3",
+            "name": "Debug day 4",
             "type": "lldb",
             "request": "launch",
             "program": "${workspaceFolder}/target/debug/aoc-2021-sjunot",
-            "args": ["3", "${workspaceFolder}/inputs/day03/part1"],
+            "args": ["4", "${workspaceFolder}/inputs/day04/part1"],
             "cwd": "${workspaceFolder}"
         }
     ]
