@@ -199,12 +199,12 @@ mod part1 {
     /// Given the numbers and boards to be played at Bingo, determine when each
     /// board will win and with what score (if it ever wins). Return the score
     /// for the Bingo board that will win the soonest.
-    pub fn solution(input: &bingo::Input) -> u32 {
+    pub fn predict(input: &bingo::Input) -> Vec<bingo::Prediction> {
 
         // Running the numbers over each board will return a "prediction" with
         // the win time and score. Filter out losing boards (None) and unpack
         // the Some(prediction) to get a sequence of Predictions.
-        let predictions = &mut input.boards.iter()
+        let mut predictions = input.boards.iter()
             .map( |board| { board.predict(&input.numbers) } )
             .filter( |prediction| prediction.is_some() )
             .map( |prediction| prediction.unwrap() )
@@ -214,19 +214,36 @@ mod part1 {
         predictions.sort_by(|a, b| a.when.cmp(&b.when) );
 
         // Return the score of the board that will win the soonest.
-        return predictions[0].score;
+        return predictions;
 
+    }
+
+    /// Returns the solution for part 1
+    pub fn solution(predictions: &Vec<bingo::Prediction>) -> u32 {
+        return predictions[0].score;
     }
 
 }
 
+mod part2 {
+
+    use super::*;
+
+    pub fn solution(predictions: &Vec<bingo::Prediction>) -> u32 {
+        return predictions.last().unwrap().score;
+    }
+
+}
 
 pub fn main(input_path: &Path) {
 
     let part1_input_source: String = fs::read_to_string(input_path).expect("failed to read part 1 input");
     let part1_input = part1::input(&part1_input_source);
-    let part1_output = part1::solution(&part1_input);
+    let part1_predictions = part1::predict(&part1_input);
+    let part1_output = part1::solution(&part1_predictions);
     println!("Part 1 answer: {}", part1_output);
+    let part2_output = part2::solution(&part1_predictions);
+    println!("Part 2 answer: {}", part2_output);
 
 }
 
@@ -264,7 +281,7 @@ mod tests {
         ";
         let example_input_cleaned = utils::remove_multiline_whitespace(&example_input);
         let part1_input = part1::input(&example_input_cleaned);
-        let part1_output = part1::solution(&part1_input);
+        let part1_output = part1::solution(&part1::predict(&part1_input));
         assert_eq!(part1_output, 4512);
 
     }
@@ -297,11 +314,11 @@ mod tests {
         };
 
         input.numbers.push(1);
-        assert_eq!(part1::solution(&input), 11);
+        assert_eq!(part1::solution(&part1::predict(&input)), 11);
 
         input.numbers.clear();
         input.numbers.push(2);
-        assert_eq!(part1::solution(&input), 22);
+        assert_eq!(part1::solution(&part1::predict(&input)), 22);
 
     }
 
